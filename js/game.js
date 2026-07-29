@@ -148,12 +148,27 @@ function launchBall() {
   ball.vy = -BALL_SPEED;
 }
 
+function resetGame() {
+  state.score = 0;
+  state.lives = 3;
+  state.status = 'ready';
+  ball.attached = true;
+  ball.vx = 0;
+  ball.vy = 0;
+  buildBlocks();
+  attachBallToPaddle();
+  hideOverlay();
+}
+
 window.addEventListener( 'keydown', ( e ) => {
   if ( e.key === 'ArrowLeft' ) keys.left = true;
   if ( e.key === 'ArrowRight' ) keys.right = true;
   if ( e.key === ' ' ) {
     e.preventDefault();
     launchBall();
+  }
+  if ( e.key === 'Enter' && ( state.status === 'won' || state.status === 'lost' ) ) {
+    resetGame();
   }
 } );
 
@@ -173,6 +188,10 @@ canvas.addEventListener( 'touchmove', ( e ) => {
 
 canvas.addEventListener( 'click', () => {
   launchBall();
+} );
+
+restartBtn.addEventListener( 'click', () => {
+  resetGame();
 } );
 
 canvas.addEventListener( 'touchstart', ( e ) => {
