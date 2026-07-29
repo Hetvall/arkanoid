@@ -37,6 +37,9 @@ const ball = {
   attached: true,
 };
 
+const PADDLE_SPEED = 8;
+const keys = { left: false, right: false };
+
 let blocks = []; // blocks[row][col] = { x, y, w, h, color } | null
 
 function buildBlocks() {
@@ -81,7 +84,54 @@ function draw() {
   drawBall();
 }
 
+function clampPaddle() {
+  if ( paddle.x < 0 ) paddle.x = 0;
+  if ( paddle.x + paddle.w > CANVAS_W ) paddle.x = CANVAS_W - paddle.w;
+}
+
+function movePaddleTo( canvasX ) {
+  paddle.x = canvasX - paddle.w / 2;
+  clampPaddle();
+}
+
+function canvasXFromClientX( clientX ) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = CANVAS_W / rect.width;
+  return ( clientX - rect.left ) * scaleX;
+}
+
+window.addEventListener( 'keydown', ( e ) => {
+  if ( e.key === 'ArrowLeft' ) keys.left = true;
+  if ( e.key === 'ArrowRight' ) keys.right = true;
+} );
+
+window.addEventListener( 'keyup', ( e ) => {
+  if ( e.key === 'ArrowLeft' ) keys.left = false;
+  if ( e.key === 'ArrowRight' ) keys.right = false;
+} );
+
+canvas.addEventListener( 'mousemove', ( e ) => {
+  movePaddleTo( canvasXFromClientX( e.clientX ) );
+} );
+
+canvas.addEventListener( 'touchmove', ( e ) => {
+  e.preventDefault();
+  movePaddleTo( canvasXFromClientX( e.touches[ 0 ].clientX ) );
+}, { passive: false } );
+
+function update() {
+  if ( keys.left ) paddle.x -= PADDLE_SPEED;
+  if ( keys.right ) paddle.x += PADDLE_SPEED;
+  clampPaddle();
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame( loop );
+}
+
 buildBlocks();
 loadSpritesheet( () => {
-  draw();
+  loop();
 } );
