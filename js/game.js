@@ -41,7 +41,7 @@ const ball = {
 };
 
 const PADDLE_SPEED = 8;
-const BALL_SPEED = 5;
+const BALL_SPEED = 6;
 const keys = { left: false, right: false };
 
 let blocks = []; // blocks[row][col] = { x, y, w, h, color } | null
