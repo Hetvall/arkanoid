@@ -38,6 +38,7 @@ const ball = {
 };
 
 const PADDLE_SPEED = 8;
+const BALL_SPEED = 5;
 const keys = { left: false, right: false };
 
 let blocks = []; // blocks[row][col] = { x, y, w, h, color } | null
@@ -100,9 +101,26 @@ function canvasXFromClientX( clientX ) {
   return ( clientX - rect.left ) * scaleX;
 }
 
+function attachBallToPaddle() {
+  ball.x = paddle.x + paddle.w / 2 - ball.w / 2;
+  ball.y = paddle.y - ball.h;
+}
+
+function launchBall() {
+  if ( state.status !== 'ready' ) return;
+  state.status = 'playing';
+  ball.attached = false;
+  ball.vx = BALL_SPEED * 0.6;
+  ball.vy = -BALL_SPEED;
+}
+
 window.addEventListener( 'keydown', ( e ) => {
   if ( e.key === 'ArrowLeft' ) keys.left = true;
   if ( e.key === 'ArrowRight' ) keys.right = true;
+  if ( e.key === ' ' ) {
+    e.preventDefault();
+    launchBall();
+  }
 } );
 
 window.addEventListener( 'keyup', ( e ) => {
@@ -119,10 +137,54 @@ canvas.addEventListener( 'touchmove', ( e ) => {
   movePaddleTo( canvasXFromClientX( e.touches[ 0 ].clientX ) );
 }, { passive: false } );
 
+canvas.addEventListener( 'click', () => {
+  launchBall();
+} );
+
+canvas.addEventListener( 'touchstart', ( e ) => {
+  movePaddleTo( canvasXFromClientX( e.touches[ 0 ].clientX ) );
+  launchBall();
+}, { passive: false } );
+
+function updateBall() {
+  ball.x += ball.vx;
+  ball.y += ball.vy;
+
+  if ( ball.x <= 0 ) {
+    ball.x = 0;
+    ball.vx *= -1;
+  } else if ( ball.x + ball.w >= CANVAS_W ) {
+    ball.x = CANVAS_W - ball.w;
+    ball.vx *= -1;
+  }
+
+  if ( ball.y <= 0 ) {
+    ball.y = 0;
+    ball.vy *= -1;
+  }
+
+  const hitsPaddle = ball.vy > 0 &&
+    ball.y + ball.h >= paddle.y &&
+    ball.y + ball.h <= paddle.y + paddle.h &&
+    ball.x + ball.w >= paddle.x &&
+    ball.x <= paddle.x + paddle.w;
+
+  if ( hitsPaddle ) {
+    ball.y = paddle.y - ball.h;
+    ball.vy *= -1;
+  }
+}
+
 function update() {
   if ( keys.left ) paddle.x -= PADDLE_SPEED;
   if ( keys.right ) paddle.x += PADDLE_SPEED;
   clampPaddle();
+
+  if ( state.status === 'ready' ) {
+    attachBallToPaddle();
+  } else if ( state.status === 'playing' ) {
+    updateBall();
+  }
 }
 
 function loop() {
