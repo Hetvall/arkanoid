@@ -193,6 +193,7 @@ function resetGame() {
   ball.vx = 0;
   ball.vy = 0;
   buildBlocks();
+  explosions = [];
   attachBallToPaddle();
   hideOverlay();
 }
