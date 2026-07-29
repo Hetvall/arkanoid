@@ -85,7 +85,13 @@ function drawHUD() {
   ctx.fillStyle = '#fff';
   ctx.font = '16px monospace';
   ctx.fillText( `Score: ${ state.score }`, 10, 22 );
-  ctx.fillText( `Lives: ${ state.lives }`, CANVAS_W - 100, 22 );
+
+  const iconSize = 16;
+  const iconGap = 6;
+  for ( let i = 0; i < state.lives; i++ ) {
+    const x = CANVAS_W - 10 - ( i + 1 ) * iconSize - i * iconGap;
+    drawSprite( ctx, 'ball', x, 14, iconSize, iconSize );
+  }
 }
 
 function showOverlay( message ) {
