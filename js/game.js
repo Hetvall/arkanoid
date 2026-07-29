@@ -94,6 +94,15 @@ function drawBlocks() {
   }
 }
 
+function drawExplosions() {
+  const now = performance.now();
+  for ( const explosion of explosions ) {
+    const frameIndex = Math.floor( ( now - explosion.startTime ) / ( EXPLOSION_DURATION / 4 ) );
+    const frame = EXPLOSION_FRAMES[ explosion.color ][ Math.min( frameIndex, 3 ) ];
+    drawFrame( ctx, frame, explosion.x, explosion.y, explosion.w, explosion.h );
+  }
+}
+
 function drawPaddle() {
   drawSprite( ctx, 'paddle', paddle.x, paddle.y, paddle.w, paddle.h );
 }
