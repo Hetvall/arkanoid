@@ -150,6 +150,7 @@ function loseLife() {
 function draw() {
   ctx.clearRect( 0, 0, CANVAS_W, CANVAS_H );
   drawBlocks();
+  drawExplosions();
   drawPaddle();
   drawBall();
   drawHUD();
@@ -304,7 +305,7 @@ function checkWin() {
   showOverlay( 'Ganaste' );
 }
 
-function update() {
+function update( timestamp ) {
   if ( keys.left ) paddle.x -= PADDLE_SPEED;
   if ( keys.right ) paddle.x += PADDLE_SPEED;
   clampPaddle();
@@ -314,10 +315,12 @@ function update() {
   } else if ( state.status === 'playing' ) {
     updateBall();
   }
+
+  updateExplosions( timestamp );
 }
 
-function loop() {
-  update();
+function loop( timestamp ) {
+  update( timestamp );
   draw();
   requestAnimationFrame( loop );
 }
