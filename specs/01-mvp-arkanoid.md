@@ -1,6 +1,6 @@
 # SPEC 01 — MVP jugable de Arkanoid
 
-> **Status:** Draft
+> **Status:** Aprobado
 > **Depends on:** ninguno
 > **Date:** 2026-07-28
 > **Objective:** Implementar un Arkanoid de una sola pantalla y un solo nivel, jugable de principio a fin con paddle controlado por teclado/mouse/touch, física simple, puntaje básico y overlay de fin de partida con reinicio.
@@ -38,24 +38,31 @@
 const state = {
   score: 0,
   lives: 3,
-  status: 'ready', // 'ready' (bola pegada al paddle) | 'playing' | 'won' | 'lost'
+  status: "ready", // 'ready' (bola pegada al paddle) | 'playing' | 'won' | 'lost'
 };
 
 // Paddle
 const paddle = {
-  x: 320, y: 560, w: 162, h: 14, // w/h según SPRITES.paddle
+  x: 320,
+  y: 560,
+  w: 162,
+  h: 14, // w/h según SPRITES.paddle
 };
 
 // Bola
 const ball = {
-  x: 400, y: 546, w: 16, h: 16, // w/h según SPRITES.ball
-  vx: 0, vy: 0, // velocidad fija en px/frame, se define al lanzar
+  x: 400,
+  y: 546,
+  w: 16,
+  h: 16, // w/h según SPRITES.ball
+  vx: 0,
+  vy: 0, // velocidad fija en px/frame, se define al lanzar
   attached: true, // true mientras está pegada al paddle
 };
 
 // Bloques: grid de 10 columnas x 6 filas
 // blocks[row][col] = null si ya fue destruido
-const blockColors = [ 'red', 'yellow', 'cyan', 'magenta', 'hotpink', 'green' ]; // una por fila
+const blockColors = ["red", "yellow", "cyan", "magenta", "hotpink", "green"]; // una por fila
 const blocks = []; // 6 filas x 10 columnas de { x, y, w, h, color }
 ```
 
@@ -112,11 +119,11 @@ Convenciones:
 
 ## Risks
 
-| Risk | Mitigation |
-| --- | --- |
+| Risk                                                                                                                | Mitigation                                                                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Eventos de mouse y touch disparándose ambos en dispositivos híbridos (laptops táctiles), causando saltos del paddle | Usar `touchmove`/`touchstart` con `preventDefault` y verificar que no se dupliquen listeners; probar en un dispositivo real o emulador táctil del navegador. |
-| Tunneling: a velocidad fija alta la bola podría atravesar el paddle o un bloque delgado sin detectar colisión | Mantener una velocidad de bola moderada y hacer la detección de colisión por frame contra el rectángulo completo del paddle/bloque, no solo por punto. |
-| El spritesheet no ha cargado (`loadSpritesheet` es asíncrono) cuando arranca el loop de juego | Iniciar el loop de renderizado solo dentro del callback de `loadSpritesheet`. |
+| Tunneling: a velocidad fija alta la bola podría atravesar el paddle o un bloque delgado sin detectar colisión       | Mantener una velocidad de bola moderada y hacer la detección de colisión por frame contra el rectángulo completo del paddle/bloque, no solo por punto.       |
+| El spritesheet no ha cargado (`loadSpritesheet` es asíncrono) cuando arranca el loop de juego                       | Iniciar el loop de renderizado solo dentro del callback de `loadSpritesheet`.                                                                                |
 
 ## What is **not** in this spec
 
