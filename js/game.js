@@ -231,10 +231,21 @@ function checkBlockCollision() {
         blocks[ row ][ col ] = null;
         state.score += 10;
         ball.vy *= -1;
+        checkWin();
         return;
       }
     }
   }
+}
+
+function allBlocksDestroyed() {
+  return blocks.every( ( row ) => row.every( ( block ) => block === null ) );
+}
+
+function checkWin() {
+  if ( !allBlocksDestroyed() ) return;
+  state.status = 'won';
+  showOverlay( 'Ganaste' );
 }
 
 function update() {
