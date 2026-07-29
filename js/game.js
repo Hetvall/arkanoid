@@ -274,6 +274,7 @@ function checkBlockCollision() {
         ball.y + ball.h > block.y;
 
       if ( overlaps ) {
+        spawnExplosion( block );
         blocks[ row ][ col ] = null;
         state.score += 10;
         ball.vy *= -1;
