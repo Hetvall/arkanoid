@@ -46,6 +46,27 @@ const keys = { left: false, right: false };
 
 let blocks = []; // blocks[row][col] = { x, y, w, h, color } | null
 
+// Explosiones activas (animación visual, no afecta colisión)
+let explosions = []; // [{ x, y, w, h, color, startTime }]
+
+function spawnExplosion( block ) {
+  explosions.push( {
+    x: block.x,
+    y: block.y,
+    w: block.w,
+    h: block.h,
+    color: block.color,
+    startTime: performance.now(),
+  } );
+}
+
+function updateExplosions( now ) {
+  explosions = explosions.filter( ( explosion ) => {
+    const frameIndex = Math.floor( ( now - explosion.startTime ) / ( EXPLOSION_DURATION / 4 ) );
+    return frameIndex <= 3;
+  } );
+}
+
 function buildBlocks() {
   blocks = [];
   for ( let row = 0; row < ROWS; row++ ) {
