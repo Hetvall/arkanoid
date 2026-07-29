@@ -1,5 +1,8 @@
 const canvas = document.getElementById( 'game' );
 const ctx = canvas.getContext( '2d' );
+const overlay = document.getElementById( 'overlay' );
+const overlayMessage = document.getElementById( 'overlay-message' );
+const restartBtn = document.getElementById( 'restart-btn' );
 
 const CANVAS_W = 800;
 const CANVAS_H = 600;
@@ -82,6 +85,30 @@ function drawHUD() {
   ctx.fillStyle = '#fff';
   ctx.font = '16px monospace';
   ctx.fillText( `Score: ${ state.score }`, 10, 22 );
+  ctx.fillText( `Lives: ${ state.lives }`, CANVAS_W - 100, 22 );
+}
+
+function showOverlay( message ) {
+  overlayMessage.textContent = message;
+  overlay.classList.remove( 'hidden' );
+}
+
+function hideOverlay() {
+  overlay.classList.add( 'hidden' );
+}
+
+function loseLife() {
+  state.lives -= 1;
+  if ( state.lives <= 0 ) {
+    state.status = 'lost';
+    showOverlay( 'Perdiste' );
+    return;
+  }
+  state.status = 'ready';
+  ball.attached = true;
+  ball.vx = 0;
+  ball.vy = 0;
+  attachBallToPaddle();
 }
 
 function draw() {
@@ -156,6 +183,11 @@ canvas.addEventListener( 'touchstart', ( e ) => {
 function updateBall() {
   ball.x += ball.vx;
   ball.y += ball.vy;
+
+  if ( ball.y > CANVAS_H ) {
+    loseLife();
+    return;
+  }
 
   if ( ball.x <= 0 ) {
     ball.x = 0;
