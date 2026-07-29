@@ -78,11 +78,18 @@ function drawBall() {
   drawSprite( ctx, 'ball', ball.x, ball.y, ball.w, ball.h );
 }
 
+function drawHUD() {
+  ctx.fillStyle = '#fff';
+  ctx.font = '16px monospace';
+  ctx.fillText( `Score: ${ state.score }`, 10, 22 );
+}
+
 function draw() {
   ctx.clearRect( 0, 0, CANVAS_W, CANVAS_H );
   drawBlocks();
   drawPaddle();
   drawBall();
+  drawHUD();
 }
 
 function clampPaddle() {
@@ -172,6 +179,29 @@ function updateBall() {
   if ( hitsPaddle ) {
     ball.y = paddle.y - ball.h;
     ball.vy *= -1;
+  }
+
+  checkBlockCollision();
+}
+
+function checkBlockCollision() {
+  for ( let row = 0; row < ROWS; row++ ) {
+    for ( let col = 0; col < COLS; col++ ) {
+      const block = blocks[ row ][ col ];
+      if ( !block ) continue;
+
+      const overlaps = ball.x < block.x + block.w &&
+        ball.x + ball.w > block.x &&
+        ball.y < block.y + block.h &&
+        ball.y + ball.h > block.y;
+
+      if ( overlaps ) {
+        blocks[ row ][ col ] = null;
+        state.score += 10;
+        ball.vy *= -1;
+        return;
+      }
+    }
   }
 }
 
