@@ -21,6 +21,7 @@ const state = {
   score: 0,
   lives: 3,
   status: 'ready', // 'ready' | 'playing' | 'won' | 'lost'
+  level: 1, // 1 | 2 | 3
 };
 
 const paddle = {
@@ -41,8 +42,25 @@ const ball = {
 };
 
 const PADDLE_SPEED = 8;
-const BALL_SPEED = 6;
 const keys = { left: false, right: false };
+
+// Velocidad de bola por nivel (índice = level - 1)
+const LEVEL_SPEEDS = [ 6, 7, 8.3 ];
+const MAX_LEVEL = LEVEL_SPEEDS.length; // 3
+
+// Determina si la celda (row, col) tiene bloque en el nivel dado
+// La fórmula de la pirámide asume COLS par para poder centrar el ancho.
+function isCellActive( level, row, col ) {
+  if ( level === 1 ) return true; // grid completo
+  if ( level === 2 ) return ( row + col ) % 2 === 0; // tablero de ajedrez
+  if ( level === 3 ) {
+    // pirámide invertida: ancho creciente hacia abajo, centrado
+    const width = Math.min( COLS, 2 * ( row + 1 ) );
+    const startCol = ( COLS - width ) / 2;
+    return col >= startCol && col < startCol + width;
+  }
+  return true;
+}
 
 // Sonidos (assets/sounds/*.mp3)
 const bounceSound = new Audio( 'assets/sounds/ball-bounce.mp3' );
@@ -193,8 +211,9 @@ function launchBall() {
   if ( state.status !== 'ready' ) return;
   state.status = 'playing';
   ball.attached = false;
-  ball.vx = BALL_SPEED * 0.6;
-  ball.vy = -BALL_SPEED;
+  const speed = LEVEL_SPEEDS[ state.level - 1 ];
+  ball.vx = speed * 0.6;
+  ball.vy = -speed;
 }
 
 function resetGame() {
