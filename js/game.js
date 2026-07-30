@@ -3,6 +3,7 @@ const ctx = canvas.getContext( '2d' );
 const overlay = document.getElementById( 'overlay' );
 const overlayMessage = document.getElementById( 'overlay-message' );
 const restartBtn = document.getElementById( 'restart-btn' );
+const pauseBtn = document.getElementById( 'pause-btn' );
 
 const CANVAS_W = 800;
 const CANVAS_H = 600;
@@ -20,8 +21,9 @@ const blockColors = [ 'red', 'yellow', 'cyan', 'magenta', 'hotpink', 'green' ]; 
 const state = {
   score: 0,
   lives: 3,
-  status: 'ready', // 'ready' | 'playing' | 'won' | 'lost'
+  status: 'ready', // 'ready' | 'playing' | 'paused' | 'won' | 'lost'
   level: 1, // 1 | 2 | 3
+  statusBeforePause: null,
 };
 
 const paddle = {
@@ -153,8 +155,9 @@ function drawHUD() {
 
   const iconSize = 16;
   const iconGap = 6;
+  const pauseBtnReservedW = 56; // deja espacio al boton de pausa fijo en la esquina superior derecha
   for ( let i = 0; i < state.lives; i++ ) {
-    const x = CANVAS_W - 10 - ( i + 1 ) * iconSize - i * iconGap;
+    const x = CANVAS_W - pauseBtnReservedW - ( i + 1 ) * iconSize - i * iconGap;
     drawSprite( ctx, 'ball', x, 14, iconSize, iconSize );
   }
 }
@@ -166,6 +169,29 @@ function showOverlay( message ) {
 
 function hideOverlay() {
   overlay.classList.add( 'hidden' );
+}
+
+function syncPauseButton() {
+  const canPause = state.status === 'playing' || state.status === 'paused';
+  pauseBtn.classList.toggle( 'hidden', !canPause );
+}
+
+function togglePause() {
+  if ( state.status === 'playing' ) {
+    state.statusBeforePause = state.status;
+    state.status = 'paused';
+    restartBtn.classList.add( 'hidden' );
+    showOverlay( 'Pausa' );
+    syncPauseButton();
+    return;
+  }
+  if ( state.status === 'paused' ) {
+    state.status = state.statusBeforePause;
+    state.statusBeforePause = null;
+    restartBtn.classList.remove( 'hidden' );
+    hideOverlay();
+    syncPauseButton();
+  }
 }
 
 function loseLife() {
@@ -198,6 +224,7 @@ function clampPaddle() {
 }
 
 function movePaddleTo( canvasX ) {
+  if ( state.status === 'paused' ) return;
   paddle.x = canvasX - paddle.w / 2;
   clampPaddle();
 }
@@ -244,6 +271,7 @@ function resetGame() {
   buildBlocks();
   explosions = [];
   attachBallToPaddle();
+  restartBtn.classList.remove( 'hidden' );
   hideOverlay();
 }
 
@@ -265,6 +293,9 @@ window.addEventListener( 'keydown', ( e ) => {
   }
   if ( e.key === 'Enter' && ( state.status === 'won' || state.status === 'lost' ) ) {
     handleRestartAction();
+  }
+  if ( e.key === 'p' || e.key === 'P' ) {
+    togglePause();
   }
 } );
 
@@ -288,6 +319,10 @@ canvas.addEventListener( 'click', () => {
 
 restartBtn.addEventListener( 'click', () => {
   handleRestartAction();
+} );
+
+pauseBtn.addEventListener( 'click', () => {
+  togglePause();
 } );
 
 canvas.addEventListener( 'touchstart', ( e ) => {
@@ -371,6 +406,8 @@ function checkWin() {
 }
 
 function update( timestamp ) {
+  if ( state.status === 'paused' ) return;
+
   if ( keys.left ) paddle.x -= PADDLE_SPEED;
   if ( keys.right ) paddle.x += PADDLE_SPEED;
   clampPaddle();
@@ -387,6 +424,7 @@ function update( timestamp ) {
 function loop( timestamp ) {
   update( timestamp );
   draw();
+  syncPauseButton();
   requestAnimationFrame( loop );
 }
 
