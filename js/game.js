@@ -44,6 +44,18 @@ const PADDLE_SPEED = 8;
 const BALL_SPEED = 6;
 const keys = { left: false, right: false };
 
+// Sonidos (assets/sounds/*.mp3)
+const bounceSound = new Audio( 'assets/sounds/ball-bounce.mp3' );
+const breakSound = new Audio( 'assets/sounds/break-sound.mp3' );
+bounceSound.volume = 0.5;
+breakSound.volume = 0.5;
+
+function playSound( audio ) {
+  const instance = audio.cloneNode();
+  instance.volume = audio.volume;
+  instance.play();
+}
+
 let blocks = []; // blocks[row][col] = { x, y, w, h, color } | null
 
 // Explosiones activas (animación visual, no afecta colisión)
