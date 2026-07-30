@@ -261,14 +261,17 @@ function updateBall() {
   if ( ball.x <= 0 ) {
     ball.x = 0;
     ball.vx *= -1;
+    playSound( bounceSound );
   } else if ( ball.x + ball.w >= CANVAS_W ) {
     ball.x = CANVAS_W - ball.w;
     ball.vx *= -1;
+    playSound( bounceSound );
   }
 
   if ( ball.y <= 0 ) {
     ball.y = 0;
     ball.vy *= -1;
+    playSound( bounceSound );
   }
 
   const hitsPaddle = ball.vy > 0 &&
@@ -280,6 +283,7 @@ function updateBall() {
   if ( hitsPaddle ) {
     ball.y = paddle.y - ball.h;
     ball.vy *= -1;
+    playSound( bounceSound );
   }
 
   checkBlockCollision();
@@ -298,6 +302,7 @@ function checkBlockCollision() {
 
       if ( overlaps ) {
         spawnExplosion( block );
+        playSound( breakSound );
         blocks[ row ][ col ] = null;
         state.score += 10;
         ball.vy *= -1;
