@@ -77,18 +77,18 @@ Convenciones:
 
 ## Acceptance criteria
 
-- [ ] El HUD muestra el nivel actual (ej. "Nivel 1 / 3") desde el arranque del juego y en todo momento durante la partida.
-- [ ] El nivel 1 usa el grid completo de bloques (10×6) y la misma velocidad de bola que hoy (BALL_SPEED = 6).
-- [ ] El nivel 2 usa un patrón de tablero de ajedrez (celdas alternadas según `(fila + columna) % 2`) y una velocidad de bola mayor a la del nivel 1 (~7).
-- [ ] El nivel 3 usa un patrón de pirámide invertida (ancho de bloques creciente hacia abajo, centrado) y una velocidad de bola mayor a la del nivel 2 (~8.3).
-- [ ] En los 3 niveles, cada bloque conserva el color correspondiente a su fila (`blockColors[row]`).
-- [ ] Al destruir todos los bloques del nivel 1 o 2, aparece el overlay "Ganaste" con el botón "Siguiente Nivel".
-- [ ] Al hacer click, tap o Enter sobre el botón "Siguiente Nivel", el juego avanza al siguiente nivel: se reconstruye el grid con su patrón y velocidad correspondientes, y la bola vuelve a estar pegada al paddle en pausa.
-- [ ] El score y las vidas se conservan al pasar de un nivel al siguiente (no se resetean).
-- [ ] Al destruir todos los bloques del nivel 3, aparece el overlay "Ganaste" con el botón "Reiniciar".
-- [ ] Al hacer click, tap o Enter sobre ese botón "Reiniciar" tras ganar el nivel 3, el juego vuelve completamente al nivel 1 (grid completo, velocidad original, score y vidas reiniciados).
-- [ ] Al perder todas las vidas en cualquier nivel, aparece el overlay "Perdiste" con el botón "Reiniciar", que reinicia el juego completo desde el nivel 1.
-- [ ] El juego sigue funcionando sin errores en consola con esta funcionalidad activa.
+- [x] El HUD muestra el nivel actual (ej. "Nivel 1 / 3") desde el arranque del juego y en todo momento durante la partida.
+- [x] El nivel 1 usa el grid completo de bloques (10×6) y la misma velocidad de bola que hoy (BALL_SPEED = 6).
+- [x] El nivel 2 usa un patrón de tablero de ajedrez (celdas alternadas según `(fila + columna) % 2`) y una velocidad de bola mayor a la del nivel 1 (~7).
+- [x] El nivel 3 usa un patrón de pirámide invertida (ancho de bloques creciente hacia abajo, centrado) y una velocidad de bola mayor a la del nivel 2 (~8.3).
+- [x] En los 3 niveles, cada bloque conserva el color correspondiente a su fila (`blockColors[row]`).
+- [x] Al destruir todos los bloques del nivel 1 o 2, aparece el overlay "Ganaste" con el botón "Siguiente Nivel".
+- [x] Al hacer click, tap o Enter sobre el botón "Siguiente Nivel", el juego avanza al siguiente nivel: se reconstruye el grid con su patrón y velocidad correspondientes, y la bola vuelve a estar pegada al paddle en pausa.
+- [x] El score y las vidas se conservan al pasar de un nivel al siguiente (no se resetean).
+- [x] Al destruir todos los bloques del nivel 3, aparece el overlay "Ganaste" con el botón "Reiniciar".
+- [x] Al hacer click, tap o Enter sobre ese botón "Reiniciar" tras ganar el nivel 3, el juego vuelve completamente al nivel 1 (grid completo, velocidad original, score y vidas reiniciados).
+- [x] Al perder todas las vidas en cualquier nivel, aparece el overlay "Perdiste" con el botón "Reiniciar", que reinicia el juego completo desde el nivel 1.
+- [x] El juego sigue funcionando sin errores en consola con esta funcionalidad activa.
 
 ## Decisions
 

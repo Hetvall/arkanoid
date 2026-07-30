@@ -237,6 +237,7 @@ function resetGame() {
   state.score = 0;
   state.lives = 3;
   state.status = 'ready';
+  state.level = 1;
   ball.attached = true;
   ball.vx = 0;
   ball.vy = 0;
