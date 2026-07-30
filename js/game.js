@@ -102,6 +102,10 @@ function buildBlocks() {
   for ( let row = 0; row < ROWS; row++ ) {
     const rowBlocks = [];
     for ( let col = 0; col < COLS; col++ ) {
+      if ( !isCellActive( state.level, row, col ) ) {
+        rowBlocks.push( null );
+        continue;
+      }
       rowBlocks.push( {
         x: BLOCK_MARGIN_X + col * ( BLOCK_W + BLOCK_GAP ),
         y: BLOCK_TOP + row * ( BLOCK_H + BLOCK_GAP ),
@@ -145,6 +149,7 @@ function drawHUD() {
   ctx.fillStyle = '#fff';
   ctx.font = '16px monospace';
   ctx.fillText( `Score: ${ state.score }`, 10, 22 );
+  ctx.fillText( `Nivel ${ state.level } / ${ MAX_LEVEL }`, 10, 44 );
 
   const iconSize = 16;
   const iconGap = 6;
@@ -214,6 +219,17 @@ function launchBall() {
   const speed = LEVEL_SPEEDS[ state.level - 1 ];
   ball.vx = speed * 0.6;
   ball.vy = -speed;
+}
+
+function nextLevel() {
+  state.level += 1;
+  buildBlocks();
+  explosions = [];
+  ball.attached = true;
+  ball.vx = 0;
+  ball.vy = 0;
+  attachBallToPaddle();
+  state.status = 'ready';
 }
 
 function resetGame() {
