@@ -1,6 +1,6 @@
 # SPEC 03 — Efectos de sonido de rebote y rotura
 
-> **Status:** Approved
+> **Status:** Implementado
 > **Depends on:** 02-block-explosion-animation
 > **Date:** 2026-07-30
 > **Objective:** Reproducir un sonido de rebote (`ball-bounce.mp3`) cada vez que la bola choca contra las paredes, el techo o el paddle, y un sonido de rotura (`break-sound.mp3`) cada vez que se destruye un bloque.
@@ -50,13 +50,13 @@ Convención: `playSound()` clona el elemento `Audio` en cada llamada (en vez de 
 
 ## Acceptance criteria
 
-- [ ] Al chocar la bola contra la pared izquierda, se reproduce `ball-bounce.mp3`.
-- [ ] Al chocar la bola contra la pared derecha, se reproduce `ball-bounce.mp3`.
-- [ ] Al chocar la bola contra el techo, se reproduce `ball-bounce.mp3`.
-- [ ] Al chocar la bola contra el paddle, se reproduce `ball-bounce.mp3`.
-- [ ] Al destruirse un bloque, se reproduce `break-sound.mp3` en el mismo instante en que se dispara su animación de explosión.
-- [ ] Rebotes o rupturas que ocurren en rápida sucesión producen sonidos superpuestos, sin cortar la reproducción anterior.
-- [ ] El juego sigue funcionando sin errores en consola con esta funcionalidad activa.
+- [x] Al chocar la bola contra la pared izquierda, se reproduce `ball-bounce.mp3`.
+- [x] Al chocar la bola contra la pared derecha, se reproduce `ball-bounce.mp3`.
+- [x] Al chocar la bola contra el techo, se reproduce `ball-bounce.mp3`.
+- [x] Al chocar la bola contra el paddle, se reproduce `ball-bounce.mp3`.
+- [x] Al destruirse un bloque, se reproduce `break-sound.mp3` en el mismo instante en que se dispara su animación de explosión.
+- [x] Rebotes o rupturas que ocurren en rápida sucesión producen sonidos superpuestos, sin cortar la reproducción anterior.
+- [x] El juego sigue funcionando sin errores en consola con esta funcionalidad activa.
 
 ## Decisions
 
