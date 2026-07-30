@@ -172,6 +172,7 @@ function loseLife() {
   state.lives -= 1;
   if ( state.lives <= 0 ) {
     state.status = 'lost';
+    restartBtn.textContent = 'Reiniciar';
     showOverlay( 'Perdiste' );
     return;
   }
@@ -245,6 +246,15 @@ function resetGame() {
   hideOverlay();
 }
 
+function handleRestartAction() {
+  if ( state.status === 'won' && state.level < MAX_LEVEL ) {
+    nextLevel();
+    hideOverlay();
+    return;
+  }
+  resetGame();
+}
+
 window.addEventListener( 'keydown', ( e ) => {
   if ( e.key === 'ArrowLeft' ) keys.left = true;
   if ( e.key === 'ArrowRight' ) keys.right = true;
@@ -253,7 +263,7 @@ window.addEventListener( 'keydown', ( e ) => {
     launchBall();
   }
   if ( e.key === 'Enter' && ( state.status === 'won' || state.status === 'lost' ) ) {
-    resetGame();
+    handleRestartAction();
   }
 } );
 
@@ -276,7 +286,7 @@ canvas.addEventListener( 'click', () => {
 } );
 
 restartBtn.addEventListener( 'click', () => {
-  resetGame();
+  handleRestartAction();
 } );
 
 canvas.addEventListener( 'touchstart', ( e ) => {
@@ -355,6 +365,7 @@ function allBlocksDestroyed() {
 function checkWin() {
   if ( !allBlocksDestroyed() ) return;
   state.status = 'won';
+  restartBtn.textContent = state.level < MAX_LEVEL ? 'Siguiente Nivel' : 'Reiniciar';
   showOverlay( 'Ganaste' );
 }
 
