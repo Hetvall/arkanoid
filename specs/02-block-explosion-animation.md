@@ -1,6 +1,6 @@
 # SPEC 02 — Animación de explosión al destruir bloques
 
-> **Status:** Approved
+> **Status:** Implementado
 > **Depends on:** 01-mvp-arkanoid
 > **Date:** 2026-07-29
 > **Objective:** Al destruir un bloque, reproducir su animación de explosión de 4 frames (usando EXPLOSION_FRAMES y EXPLOSION_DURATION de assets/spritesheet.js) en lugar de que desaparezca instantáneamente.
@@ -46,14 +46,14 @@ Convención: el frame a mostrar se calcula como `Math.floor((now - startTime) / 
 
 ## Acceptance criteria
 
-- [ ] Al destruir un bloque, se reproduce una animación de 4 frames usando `EXPLOSION_FRAMES[color]` en la posición del bloque.
-- [ ] La animación completa dura 150ms (cada frame ~37.5ms) antes de desaparecer del todo.
-- [ ] El color de la explosión coincide con el color del bloque destruido.
-- [ ] La bola rebota y el score aumenta en el mismo frame del impacto, sin esperar a que termine la animación (la física no cambia respecto al spec 01).
-- [ ] Es posible ver dos o más explosiones animándose simultáneamente en pantalla si se rompen bloques distintos en sucesión rápida, cada una con su propio timing independiente.
-- [ ] Al destruir el último bloque, el overlay de "Ganaste" aparece de inmediato, sin esperar a que termine la animación de ese último bloque.
-- [ ] Al reiniciar el juego (botón o Enter), no quedan explosiones de la partida anterior visibles en la nueva partida.
-- [ ] El juego sigue funcionando sin errores en consola con esta funcionalidad activa.
+- [x] Al destruir un bloque, se reproduce una animación de 4 frames usando `EXPLOSION_FRAMES[color]` en la posición del bloque.
+- [x] La animación completa dura 150ms (cada frame ~37.5ms) antes de desaparecer del todo.
+- [x] El color de la explosión coincide con el color del bloque destruido.
+- [x] La bola rebota y el score aumenta en el mismo frame del impacto, sin esperar a que termine la animación (la física no cambia respecto al spec 01).
+- [x] Es posible ver dos o más explosiones animándose simultáneamente en pantalla si se rompen bloques distintos en sucesión rápida, cada una con su propio timing independiente.
+- [x] Al destruir el último bloque, el overlay de "Ganaste" aparece de inmediato, sin esperar a que termine la animación de ese último bloque.
+- [x] Al reiniciar el juego (botón o Enter), no quedan explosiones de la partida anterior visibles en la nueva partida.
+- [x] El juego sigue funcionando sin errores en consola con esta funcionalidad activa.
 
 ## Decisions
 
